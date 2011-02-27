@@ -1,0 +1,5 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Mojolicious/Plugin/Gravatar.pm

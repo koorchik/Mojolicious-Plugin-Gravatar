@@ -1,0 +1,103 @@
+Mojolicious::Plugin::Gravatar - Globally Recognized Avatars for Mojolicious
+
+SYNOPSIS
+         # Mojolicious
+         $self->plugin('gravatar');
+
+         You can pass default size, rating, and default avatar url
+         $self->plugin('gravatar' => {
+             size    => 60,   #default was 80
+             rating  => 'X',  #default was PG
+             default => 'http://example.com/default.png' # default was not value
+         });
+
+         # Mojolicious::Lite
+         plugin 'gravatar';
+
+         # Gravatars in templates
+         <%= gravatar 'user@mail.com' %>
+         will generate
+         <img src="http://www.gravatar.com/avatar/6ad193f57f79ac444c3621370da955e9&amp;s=80&amp;r=PG" alt="Gravatar" height="80" width="80">
+
+         <%= gravatar_url 'user@mail.com' %>  - if you need only url
+
+         Also you can overwrite any default config variables
+         <%= gravatar 'user@mail.com', size => 40, rating=> 'X' %>
+
+
+         If you need some styling for img tag:
+         <span class='gravatar'>  <%= gravatar $email %> </span>
+         and describe in css - ".gravatar img {border: 1px solid white;}"
+
+DESCRIPTION
+       This plugin adds gravatar ( <http://gravatar.com> ) helpers to your application.
+
+CONFIG
+   default (optional)
+       The local (any valid absolute image URI) image to use if there is no Gravatar corresponding to the given email.
+
+   size (optional)
+       Gravatars are square. Size is 1 through 512 (pixels) and sets the width and the height.
+
+   rating (optional)
+       G|PG|R|X. The maximum rating of Gravatar you wish returned. If you have a family friendly forum, for example, you might set it to "G."
+
+HELPERS
+   gravatar $email [, %options ];
+       generate img tag for getting avatar from gravatar.com
+
+       $email (required) The key to using Gravatars is a hex hash of the user's email. This is generated automatically and sent to gravatar.com as the gravatar_id.
+
+       %options (optional) - you can override config parameters . Support all parameters that you have in config
+
+       example <img src="http://www.gravatar.com/avatar/6ad193f57f79ac444c3621370da955e9&amp;s=80&amp;r=PG" alt="Gravatar" height="80" width="80">
+
+   gravatar_url $email [, %options ];
+       generate url for getting avatar from gravatar.com
+
+       $email (required) The key to using Gravatars is a hex hash of the user's email. This is generated automatically and sent to gravatar.com as the gravatar_id.
+
+       %options (optional) - you can override config parameters . Support all parameters that you have in config
+
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+SUPPORT AND DOCUMENTATION
+
+After installing, you can find documentation for this module with the
+perldoc command.
+
+    perldoc Mojolicious::Plugin::Gravatar
+
+You can also look for information at:
+
+    RT, CPAN's request tracker
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Mojolicious-Plugin-Gravatar
+
+    AnnoCPAN, Annotated CPAN documentation
+        http://annocpan.org/dist/Mojolicious-Plugin-Gravatar
+
+    CPAN Ratings
+        http://cpanratings.perl.org/d/Mojolicious-Plugin-Gravatar
+
+    Search CPAN
+        http://search.cpan.org/dist/Mojolicious-Plugin-Gravatar/
+
+
+LICENSE AND COPYRIGHT
+
+Copyright (C) 2011 "koorchik"
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
