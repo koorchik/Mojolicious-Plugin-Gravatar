@@ -1,5 +1,5 @@
 Changes
 MANIFEST
 Makefile.PL
-README
+README.pod
 lib/Mojolicious/Plugin/Gravatar.pm

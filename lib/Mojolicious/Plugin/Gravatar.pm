@@ -29,9 +29,10 @@ sub register {
 
             my $url = 'http://www.gravatar.com/avatar/';
             $url .= b( lc $email )->md5_sum;
-            $url .= '?d=' . b($default)->url_escape if $default;
-            $url .= '&s=' . $size if $size;
+            $url .= '?s=' . $size;
             $url .= '&r=' . $rating if $rating;
+            $url .= '&d=' . b($default)->url_escape if $default;
+            return $url;
         } );
 
     $app->helper(
@@ -58,7 +59,6 @@ sub check_options {
 
     if ( exists $options{rating} && $options{rating} !~ /^(?:g|pg|r|x)$/i ) {
         die "Gravatar rating can only be g, pg, r, or x\n";
-        $options{rating} = lc $options{rating};
     }
 
     return $self;
