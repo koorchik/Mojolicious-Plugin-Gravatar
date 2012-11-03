@@ -3,3 +3,4 @@ MANIFEST
 Makefile.PL
 README.pod
 lib/Mojolicious/Plugin/Gravatar.pm
+t/gravatar.t

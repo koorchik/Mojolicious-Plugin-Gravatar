@@ -1,4 +1,5 @@
 Revision history for Mojolicious-Plugin-Gravatar
 
+0.02  Fixed a small html escaping bug.
 0.01  First version, released on an unsuspecting world.
 
