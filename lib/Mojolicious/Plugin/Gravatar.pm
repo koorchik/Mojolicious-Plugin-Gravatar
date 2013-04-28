@@ -5,7 +5,7 @@ use strict;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub register {
     my ( $self, $app, $conf ) = @_;
@@ -43,7 +43,7 @@ sub register {
 
             my $size = $options{'size'} || $conf->{'size'};
 
-            my $url = b($c->gravatar_url(@_))->html_escape;
+            my $url = b($c->gravatar_url(@_))->xml_escape;
 
             return b "<img src='$url' alt='Gravatar' height='$size' width='$size' />";
         } );
