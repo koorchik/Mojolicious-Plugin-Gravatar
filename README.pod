@@ -1,3 +1,4 @@
+
 =head1 NAME
 
 Mojolicious::Plugin::Gravatar - Globally Recognized Avatars for Mojolicious
@@ -12,6 +13,7 @@ Mojolicious::Plugin::Gravatar - Globally Recognized Avatars for Mojolicious
       size    => 60,   #default was 80
       rating  => 'X',  #default was PG
       default => 'http://example.com/default.png' # default was not value
+      scheme  => 'https' # if omitted will look in request's url scheme.
   });
 
   # Mojolicious::Lite
@@ -37,7 +39,6 @@ Mojolicious::Plugin::Gravatar - Globally Recognized Avatars for Mojolicious
 
 This plugin adds gravatar ( L<http://gravatar.com> ) helpers to your application. 
 
-
 =head1 CONFIG
 
 =head2 default (optional)
@@ -51,6 +52,10 @@ Gravatars are square. Size is 1 through 512 (pixels) and sets the width and the 
 =head2 rating (optional)
 
 G|PG|R|X. The maximum rating of Gravatar you wish returned. If you have a family friendly forum, for example, you might set it to "G."
+
+=head2 scheme (optional)
+
+Gravatar URL scheme "http" or "https". If omitted will look in request's url scheme (if empty fill use "http").
 
 =head1 HELPERS
 

@@ -5,7 +5,7 @@ use strict;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub register {
     my ( $self, $app, $conf ) = @_;
@@ -17,53 +17,55 @@ sub register {
     $conf->{'size'}   ||= 80;
     $conf->{'rating'} ||= 'PG';
 
-    $app->helper(
-        gravatar_url => sub {
-            my $c = shift;
-            my ( $email, %options ) = @_;
-            $self->check_options(%options);
+    $app->helper( gravatar_url => sub {
+        my $c = shift;
+        my ( $email, %options ) = @_;
+        $self->check_options(%options);
 
-            my $default = $options{'default'} || $conf->{'default'};
-            my $size    = $options{'size'}    || $conf->{'size'};
-            my $rating  = $options{'rating'}  || $conf->{'rating'};
+        my $default = $options{'default'} || $conf->{'default'};
+        my $size    = $options{'size'}    || $conf->{'size'};
+        my $rating  = $options{'rating'}  || $conf->{'rating'};
+        my $scheme  = $options{'scheme'}  || $conf->{scheme} || $c->req->url->to_abs->scheme || 'http';
 
-            my $url = 'http://www.gravatar.com/avatar/';
-            $url .= b( lc $email )->md5_sum;
-            $url .= '?s=' . $size;
-            $url .= '&r=' . $rating if $rating;
-            $url .= '&d=' . b($default)->url_escape if $default;
-            return $url;
-        } );
+        my $url = $scheme . '://www.gravatar.com/avatar/';
+        $url .= b( lc $email )->md5_sum;
+        $url .= '?s=' . $size;
+        $url .= '&r=' . $rating if $rating;
+        $url .= '&d=' . b($default)->url_escape if $default;
+        return $url;
+    } );
 
-    $app->helper(
-        gravatar => sub {
-            my $c = shift;
-            my ( $email, %options ) = @_;
-            $self->check_options(%options);
+    $app->helper( gravatar => sub {
+        my $c = shift;
+        my ( $email, %options ) = @_;
+        $self->check_options(%options);
 
-            my $size = $options{'size'} || $conf->{'size'};
+        my $size = $options{'size'} || $conf->{'size'};
 
-            my $url = b($c->gravatar_url(@_))->xml_escape;
+        my $url = b($c->gravatar_url(@_))->xml_escape;
 
-            return b "<img src='$url' alt='Gravatar' height='$size' width='$size' />";
-        } );
+        return b "<img src='$url' alt='Gravatar' height='$size' width='$size' />";
+    } );
 }
 
 sub check_options {
     my ($self) = shift;
     my %options = @_;
 
-    if ( exists $options{size} && !( $options{size} >= 1 and $options{size} <= 512 ) ) {
+    if ( $options{size} && !( $options{size} >= 1 and $options{size} <= 512 ) ) {
         die "Gravatar size must be 1 .. 512\n";
     }
 
-    if ( exists $options{rating} && $options{rating} !~ /^(?:g|pg|r|x)$/i ) {
+    if ( $options{rating} && $options{rating} !~ /^(?:g|pg|r|x)$/i ) {
         die "Gravatar rating can only be g, pg, r, or x\n";
+    }
+
+    if ( $options{scheme} && $options{scheme} !~ /^https?$/i ) {
+        die "Http scheme can only be http, https\n";
     }
 
     return $self;
 }
-
 
 =head1 NAME
 
@@ -79,6 +81,7 @@ Mojolicious::Plugin::Gravatar - Globally Recognized Avatars for Mojolicious
       size    => 60,   #default was 80
       rating  => 'X',  #default was PG
       default => 'http://example.com/default.png' # default was not value
+      scheme  => 'https' # if omitted will look in request's url scheme.
   });
 
   # Mojolicious::Lite
@@ -104,7 +107,6 @@ Mojolicious::Plugin::Gravatar - Globally Recognized Avatars for Mojolicious
 
 This plugin adds gravatar ( L<http://gravatar.com> ) helpers to your application. 
 
-
 =head1 CONFIG
 
 =head2 default (optional)
@@ -118,6 +120,10 @@ Gravatars are square. Size is 1 through 512 (pixels) and sets the width and the 
 =head2 rating (optional)
 
 G|PG|R|X. The maximum rating of Gravatar you wish returned. If you have a family friendly forum, for example, you might set it to "G."
+
+=head2 scheme (optional)
+
+Gravatar URL scheme "http" or "https". If omitted will look in request's url scheme (if empty fill use "http").
 
 =head1 HELPERS
 
