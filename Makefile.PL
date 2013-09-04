@@ -15,6 +15,11 @@ WriteMakefile(
         'Test::More'  => '0',
         'Mojolicious' => '3.97'
     },
+    META_MERGE          => {
+        resources => {
+            repository  =>  'https://github.com/koorchik/Mojolicious-Plugin-Gravatar',
+        },
+    },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Mojolicious-Plugin-Gravatar-*' },
     
