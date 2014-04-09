@@ -4,4 +4,5 @@ Revision history for Mojolicious-Plugin-Gravatar
 0.02  Fixed a small html escaping bug (Akron).
 0.03  Updated Mojolicious dependency to 3.97(fixed incompatibilities)
 0.04  Added "scheme" options. Reformatted tests.
+0.05  Use "secure.gravatar.com" when scheme is "https"
 
