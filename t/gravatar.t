@@ -38,7 +38,7 @@ subtest '"gravatar_url" with custom options' => sub {
 	my $string = $app->gravatar_url('user@mail.com' => ( scheme => 'https', size => 32, rating => 'PG', default => 'http://example.org/default.gif'));
 	my $url = Mojo::URL->new($string);
 	is($url->scheme, 'https', 'URL scheme');
-	is($url->host, 'www.gravatar.com', 'URL host');
+	is($url->host, 'secure.gravatar.com', 'URL host');
 	is($url->path, '/avatar/6ad193f57f79ac444c3621370da955e9', 'URL path');
 	
 	my $q = $url->query;

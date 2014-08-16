@@ -27,7 +27,9 @@ sub register {
         my $rating  = $options{'rating'}  || $conf->{'rating'};
         my $scheme  = $options{'scheme'}  || $conf->{scheme} || $c->req->url->to_abs->scheme || 'http';
 
-        my $url = $scheme . '://www.gravatar.com/avatar/';
+        my $host = $scheme eq 'https' ? 'secure' : 'www';
+        my $url  = "$scheme://$host.gravatar.com/avatar/";
+
         $url .= b( lc $email )->md5_sum;
         $url .= '?s=' . $size;
         $url .= '&r=' . $rating if $rating;
